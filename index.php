@@ -1,3 +1,10 @@
+<?php
+function limpar_texto($str)
+{
+    return preg_replace("/[^0-9]/", "", $str);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,10 +28,10 @@
             <h3>IMC</h3>
 
             <div>
-                <input required type="text" id="peso" name="peso" placeholder="Peso (KG) EX.74">
+                <input required type="text" id="peso" name="peso" placeholder="Digite seu peso">
             </div>
             <div style="margin-top: 10px;">
-                <input required id="altura" type="text" name="altura" placeholder="Altura (CM) EX.175">
+                <input required id="altura" type="text" name="altura" placeholder="Digite sua Altura ">
             </div>
 
 
@@ -37,9 +44,22 @@
         <div id="code">
             <?php
 
-            if (!empty($_POST["peso"]) && (!empty($_POST["altura"]))) {
+            if (count($_POST) > 0) {
+
                 $peso = $_POST["peso"];
                 $altura = $_POST["altura"];
+
+                if(!empty($peso)){
+
+                    $peso = limpar_texto($peso);
+                }
+
+                if(!empty($altura)){
+
+                    $altura = limpar_texto($altura);
+                }
+                
+                
 
 
                 $altura = $altura / 100; // Convertendo de cm para metros
@@ -65,8 +85,9 @@
                     echo  "muito baixo <br> Seu IMC : $calculo";
             ?>
                     <div class="imgs">
-                    <img id="imgm" style=" width:35%; margin-left:5%;  " src="img/magro.jfif" alt="">
-                    <p class="texto" style="color:red;">Se manter uma rotina de exercícios e alimentação balanceada <br> pode ser a "salvação" do organismo de um gordo ou um magro, essa regra<br> não vale para os obesos. Para eles, os cuidados, a dieta e as atividades <br> físicas devem ser maiores e, mesmo assim, apenas reduzem os riscos, mas<br> não garantem uma saúde plena.</p></div>
+                        <img id="imgm" style=" width:35%; margin-left:5%;  " src="img/magro.jfif" alt="">
+                        <p class="texto" style="color:red;">Se manter uma rotina de exercícios e alimentação balanceada <br> pode ser a "salvação" do organismo de um gordo ou um magro, essa regra<br> não vale para os obesos. Para eles, os cuidados, a dieta e as atividades <br> físicas devem ser maiores e, mesmo assim, apenas reduzem os riscos, mas<br> não garantem uma saúde plena.</p>
+                    </div>
                 <?php
 
 
@@ -76,27 +97,30 @@
                 if (($calculo > $pesonormal) && ($calculo <  $pesonormal2)) {
                     echo "Normal <br> Seu IMC: $calculo";
                 ?>
-                <div class="imgs">
-                    <img  style="margin-left: 1%; width:220px; ; " src="img/normal.jfif" alt="">
-                    <p class="texto" style="color: green;">Que bom que você está com o peso normal! E o melhor jeito de continuar <br> assim é mantendo um estilo de vida ativo e uma alimentação equilibrada.</p></div>
+                    <div class="imgs">
+                        <img style="margin-left: 1%; width:220px; ; " src="img/normal.jfif" alt="">
+                        <p class="texto" style="color: green;">Que bom que você está com o peso normal! E o melhor jeito de continuar <br> assim é mantendo um estilo de vida ativo e uma alimentação equilibrada.</p>
+                    </div>
                 <?php
 
                 }
                 if (($calculo > $acimadopeso) && ($calculo <  $acimadopeso2)) {
                     echo "Sobre peso <br>  Seu IMC:$calculo";
                 ?>
-                <div class="imgs">
-                    <img style="margin-left: 4%;" src="img/gordo.jfif" alt="">
-                    <P class="texto">Ele é, na verdade, uma pré-obesidade e muitas pessoas nessa faixa já <br> apresentam doenças associadas, como diabetes e hipertensão. Importante <br> rever hábitos e buscar ajuda antes de, por uma série de fatores, entrar na <br>faixa da obesidade pra valer.</P></div>
+                    <div class="imgs">
+                        <img style="margin-left: 4%;" src="img/gordo.jfif" alt="">
+                        <P class="texto">Ele é, na verdade, uma pré-obesidade e muitas pessoas nessa faixa já <br> apresentam doenças associadas, como diabetes e hipertensão. Importante <br> rever hábitos e buscar ajuda antes de, por uma série de fatores, entrar na <br>faixa da obesidade pra valer.</P>
+                    </div>
                 <?php
 
                 }
                 if ($calculo > $obeso) {
                     echo "Obesidade <br> Seu IMC: $calculo";
 
-                ?>  <div class="imgs">
-                    <img style="margin-left: 4%;" src="img/obeso.jfif" alt="">
-                    <p class="texto" style="color: red;">Sinal de alerta! Chegou na hora de se cuidar, mesmo que seus exames<br> sejam normais. Vamos dar início a mudanças hoje! Cuide de sua <br> alimentação. Você precisa iniciar um acompanhamento com nutricionista <br> e/ou endocrinologista.</p></div>
+                ?> <div class="imgs">
+                        <img style="margin-left: 4%;" src="img/obeso.jfif" alt="">
+                        <p class="texto" style="color: red;">Sinal de alerta! Chegou na hora de se cuidar, mesmo que seus exames<br> sejam normais. Vamos dar início a mudanças hoje! Cuide de sua <br> alimentação. Você precisa iniciar um acompanhamento com nutricionista <br> e/ou endocrinologista.</p>
+                    </div>
 
             <?php
                 }
